@@ -1,0 +1,28 @@
+version: '3.9'  
+services:  
+  api:  
+    build: .  
+    ports:  
+      - "8000:8000"  
+    environment:  
+      - DATABASE_URL=postgresql://postgres:new_password@db:5432/loyalty  
+      - SECRET_KEY=${SECRET_KEY}  
+      - REDIS_URL=redis://redis:6379  
+    depends_on:  
+      - db  
+      - redis  
+  db:  
+    image: postgres:17  
+    environment:  
+      - POSTGRES_USER=postgres  
+      - POSTGRES_PASSWORD=new_password  
+    volumes:  
+      - postgres_data:/var/lib/postgresql/data  
+  redis:  
+    image: redis:7  
+    volumes:  
+      - redis_data:/data  
+
+volumes:  
+  postgres_data:  
+  redis_data:  
